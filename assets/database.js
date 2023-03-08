@@ -14,6 +14,7 @@ const database={
 			response.data[index]=newData;
 			api.PUT(documentID,response.data,function(){
 				alert('The Blog has been updated.');
+				window.location.reload();
 			});
 		});
 	},
@@ -29,7 +30,8 @@ const database={
 			quoteData.comments = comments;
 			api.PUT(documentID, jsonData, function () {
 				alert('The comment has been added successfully.');
-				console.log(quoteData.comments);
+				window.location.reload();
+			
 				// location.reload(); // reload the page to see the updated comments
 			});
 		});
@@ -39,6 +41,7 @@ const database={
 			response.data.splice(index,1);
 			api.PUT(documentID,response.data,function(){
 				alert('The Blog has been deleted.you will be redirected to the home page');
+				window.location.href = "index.html";
 			});
 		});
 	},
@@ -46,7 +49,7 @@ const database={
 		api.GET(documentID,function(response){
 			response.data.push(newData);
 			api.PUT(documentID,response.data,function(){
-				alert('The quote has been added. you will be redirected to the home page');
+				alert('The Blog has been added successfully');
 				window.location.href = "index.html";
 			});
 		});
