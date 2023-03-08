@@ -25,8 +25,11 @@ const blogs={
 	detail:function(index){
 		database.detail(blogs.documentID,index,function(item){
 			document.getElementById('loading').style.display='none';
+			document.getElementById('post-title').innerText=item.title;
+			document.getElementById('post-sub-title').innerText=item.subTitle;
 			document.getElementById('blog-author').innerText=item.author;
 			document.getElementById('blog-text').innerText=item.blog;
+			document.getElementById('blog-date').innerText=item.blogDate;
 			document.getElementById('btn-edit').setAttribute('href',`edit.html?index=${index}`);
 			
 			for(let i=0;i< item.comments.length;i++){
