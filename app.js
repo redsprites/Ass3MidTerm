@@ -7,14 +7,18 @@ const blogs={
 			for(let i=0;i<items.length;i++){
 				let blog=items[i];
 				let el=document.createElement('div');
-				el.innerHTML=`<div>
-						<blockquote>
-							<em><a href="detail.html?index=${i}">${blog.blog}</a></em>
-						</blockquote>
-						${blog.author}
-						<hr />
+				el.innerHTML=`<div class="post-preview">
+						<a href="post.html?index=${i}">
+							<h2 class="post-title">${blog.title}</h2>
+							<h3 class="post-subtitle">${blog.subTitle}</h3>	
+						</a>	
+						<p class="post-meta">
+						Posted by <a href="#!">${blog.author}</a>
+						on ${blog.blogDate}
+						</p>	
 					</div>`;
-				document.getElementById('blogs').append(el);
+					console.log(el)
+				document.getElementById('post-preview').append(el);
 			}
 		});
 	},
@@ -47,10 +51,18 @@ const blogs={
 		document.querySelector('form').addEventListener('submit',function(e){
 			e.preventDefault();
 			let author=document.querySelector('form input[name=author]');
+			let title=document.querySelector('form input[name=title]');
+			let subTitle = document.querySelector('form textarea[name=subTitle]');
 			let blog=document.querySelector('form textarea[name=blog]');
+			const date = new Date()
+			const todaysDate = date.toLocaleDateString();
+			
 			let newBlog={
 				author:author.value,
-				blog:blog.value
+				title: title.value,
+				subTitle:subTitle.value,
+				blog:blog.value,
+				blogDate: todaysDate
 			}
 			database.create(blogs.documentID,newBlog);
 		});
@@ -59,15 +71,24 @@ const blogs={
 		database.detail(blogs.documentID,index,function(item){
 			document.getElementById('loading').style.display='none';
 			document.querySelector('form input[name=author]').value=item.author;
+			document.querySelector('form textarea[name=title]').value=item.title;
+			document.querySelector('form input[name=subTitle]').value=item.subTitle;
 			document.querySelector('form textarea[name=blog]').value=item.blog;
 			
 			document.querySelector('form').addEventListener('submit',function(e){
 				e.preventDefault();
 				let author=document.querySelector('form input[name=author]');
+				let title=document.querySelector('form input[name=title]');
+				let subTitle = document.querySelector('form textarea[name=subTitle]');
 				let blog=document.querySelector('form textarea[name=blog]');
+				const date = new Date()
+				const todaysDate = date.toLocaleDateString();
 				let newBlog={
 					author:author.value,
-					blog:blog.value
+					title: title.value,
+					subTitle:subTitle.value,
+					blog:blog.value,
+					blogDate: todaysDate
 				}
 				database.update(blogs.documentID,index,newBlog);
 			});
