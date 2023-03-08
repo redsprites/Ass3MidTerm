@@ -1,0 +1,53 @@
+const database={
+	index:function(documentID,callback){
+		api.GET(documentID,function(response){
+			callback(response.data);
+		});
+	},
+	detail:function(documentID,index,callback){
+		api.GET(documentID,function(response){
+			callback(response.data[index]);
+		});
+	},
+	update:function(documentID,index,newData){
+		api.GET(documentID,function(response){
+			response.data[index]=newData;
+			api.PUT(documentID,response.data,function(){
+				alert('The quote has been updated. Please go back to the home page');
+			});
+		});
+	},
+	addComment: function (documentID, index, newComment) {
+		api.GET(documentID, function (response) {
+			let jsonData = response.data;
+			let quoteData = jsonData[index];
+			let comments = quoteData.comments || [];
+			let user = newComment.user;
+			let comment = newComment.comment;
+			console.log(user, comment)
+			comments.push({ user: user, comment: comment }); // add the new comment as an object with the user and comment properties
+			quoteData.comments = comments;
+			api.PUT(documentID, jsonData, function () {
+				alert('The comment has been added successfully.');
+				console.log(quoteData.comments);
+				// location.reload(); // reload the page to see the updated comments
+			});
+		});
+	},	
+	delete:function(documentID,index){
+		api.GET(documentID,function(response){
+			response.data.splice(index,1);
+			api.PUT(documentID,response.data,function(){
+				alert('The quote has been deleted. Please go back to the home page');
+			});
+		});
+	},
+	create:function(documentID,newData){
+		api.GET(documentID,function(response){
+			response.data.push(newData);
+			api.PUT(documentID,response.data,function(){
+				alert('The quote has been added. Please go back to the home page');
+			});
+		});
+	},
+}
