@@ -52,7 +52,7 @@ const blogs={
 			e.preventDefault();
 			let author=document.querySelector('form input[name=author]');
 			let title=document.querySelector('form input[name=title]');
-			let subTitle = document.querySelector('form textarea[name=subTitle]');
+			let subTitle = document.querySelector('form input[name=subTitle]');
 			let blog=document.querySelector('form textarea[name=blog]');
 			const date = new Date()
 			const todaysDate = date.toLocaleDateString();

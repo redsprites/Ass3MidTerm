@@ -13,7 +13,7 @@ const database={
 		api.GET(documentID,function(response){
 			response.data[index]=newData;
 			api.PUT(documentID,response.data,function(){
-				alert('The quote has been updated. Please go back to the home page');
+				alert('The Blog has been updated.');
 			});
 		});
 	},
@@ -38,7 +38,7 @@ const database={
 		api.GET(documentID,function(response){
 			response.data.splice(index,1);
 			api.PUT(documentID,response.data,function(){
-				alert('The quote has been deleted. Please go back to the home page');
+				alert('The Blog has been deleted.you will be redirected to the home page');
 			});
 		});
 	},
@@ -46,7 +46,8 @@ const database={
 		api.GET(documentID,function(response){
 			response.data.push(newData);
 			api.PUT(documentID,response.data,function(){
-				alert('The quote has been added. Please go back to the home page');
+				alert('The quote has been added. you will be redirected to the home page');
+				window.location.href = "index.html";
 			});
 		});
 	},
