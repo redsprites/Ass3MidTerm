@@ -18,28 +18,44 @@ const database={
 			});
 		});
 	},
-	addComment: function (documentID, index, newComment) {
+	addComment: function (documentID, index, newComment,) {
+		console.log(documentID)
 		api.GET(documentID, function (response) {
 			let jsonData = response.data;
 			let blogData = jsonData[index];
+			console.log(index)
+			if (!blogData) {
+				throw new Error('Blog data not found');
+			}
+			
 			let comments = blogData.comments || [];
-			let user = newComment.user;
+			let firstName = newComment.firstName;
+			let lastName = newComment.lastName;
+			let commentID = new Date().getTime(); // create a unique ID for the comment
 			let comment = newComment.comment;
-			comments.push({ user: user, comment: comment }); // add the new comment as an object with the user and comment properties
+			const date = new Date();
+			const todaysDate = date.toLocaleDateString();
+			let updatedComment = {
+				firstName: firstName,
+				lastName: lastName,
+				commentID: commentID,
+				comment: comment,
+				datePosted: todaysDate,
+				likes: 0 // add the "likes" property with an initial value of 0
+			};
+			comments.push(updatedComment); // add the new comment as an object with the updated properties
 			blogData.comments = comments;
 			api.PUT(documentID, jsonData, function () {
 				alert('The comment has been added successfully.');
 				window.location.reload();
-			
-				// location.reload(); // reload the page to see the updated comments
 			});
 		});
-	},	
+	},
 	delete:function(documentID,index){
 		api.GET(documentID,function(response){
 			response.data.splice(index,1);
 			api.PUT(documentID,response.data,function(){
-				alert('The Blog has been deleted.you will be redirected to the home page');
+				alert('The Blog has been deleted. You will be redirected to the home page');
 				window.location.href = "index.html";
 			});
 		});
@@ -54,4 +70,22 @@ const database={
 			});
 		});
 	},
+	updateComment: function (documentID, index, commentID, updatedComment) {
+		api.GET(documentID, function (response) {
+		  let jsonData = response.data;
+		  let blogData = jsonData[index];
+		  if (!blogData) {
+			throw new Error('Blog data not found');
+		  }
+		  let comments = blogData.comments || [];
+		  let commentIndex = comments.findIndex(comment => comment.commentID === commentID);
+		  if (commentIndex === -1) {
+			throw new Error('Comment not found');
+		  }
+		  comments[commentIndex] = updatedComment;
+		  blogData.comments = comments;
+		  api.PUT(documentID, jsonData, function () {
+		  });
+		});
+	  }	
 }

@@ -18,6 +18,7 @@
         rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -71,11 +72,27 @@
                         <div id="display-comments"></div>
                         <div id="comments">
                             <form id="add-comment-form">
-                                <label for="user">User:</label>
-                                <input type="text" id="user" name="user">
-                                <label for="comment">Comment:</label>
-                                <textarea id="comment" name="comment"></textarea>
-                                <button type="submit">Add comment</button>
+                                <br />
+                                
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Add a Comment</h5>
+                                <div class="form-floating">
+                                    <input name="firstName" class="form-control" id="firstName" type="text" placeholder="Enter your first name..." data-sb-validations="required" />
+                                    <label for="firstName">First Name:</label>
+                               </div>
+                               <div class="form-floating">
+                                <input name="lastName" class="form-control" id="lastName" type="text" placeholder="Enter your last name..." data-sb-validations="required" />
+                                <label for="lastName">Last Name:</label>
+                           </div>
+                           <div class="form-floating">
+                            <textarea class="form-control" name= "comment" id="comment" placeholder="Enter your message here..." style="height: 7rem" data-sb-validations="required"></textarea>
+                            <label for="comment">Comment:</label>
+                             </div>
+                             <br />                    
+                                <button class="btn btn-primary text-uppercase" type="submit">Add comment</button>
+                            </div>
+                            </div>
                             </form>
                             <div id="comment-list"></div>
                         </div>
