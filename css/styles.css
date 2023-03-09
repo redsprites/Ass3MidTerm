@@ -11126,6 +11126,7 @@ header.masthead {
   background-color: #6c757d;
   background-size: cover;
   background-attachment: scroll;
+ 
 }
 header.masthead:before {
   content: "";

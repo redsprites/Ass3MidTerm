@@ -17,13 +17,16 @@ const blogs={
 						on ${blog.blogDate}
 						</p>	
 					</div>`;
-					console.log(el)
 				document.getElementById('post-preview').append(el);
 			}
 		});
 	},
 	detail:function(index){
 		database.detail(blogs.documentID,index,function(item){
+			let deleteButton=document.getElementById('btn-delete');
+			deleteButton.addEventListener('click',function(){
+				database.delete(blogs.documentID,index);
+			});
 			document.getElementById('loading').style.display='none';
 			document.getElementById('post-title').innerText=item.title;
 			document.getElementById('post-sub-title').innerText=item.subTitle;
@@ -31,7 +34,7 @@ const blogs={
 			document.getElementById('blog-text').innerText=item.blog;
 			document.getElementById('blog-date').innerText=item.blogDate;
 			document.getElementById('btn-edit').setAttribute('href',`edit.html?index=${index}`);
-			
+			if (item.hasOwnProperty('comments')){
 			for(let i=0;i< item.comments.length;i++){
 				let comment = item.comments[i];
 				let el=document.createElement('div');
@@ -44,10 +47,7 @@ const blogs={
 					</div>`;
 				document.getElementById('display-comments').append(el);
 			}
-			let deleteButton=document.getElementById('btn-delete');
-			deleteButton.addEventListener('click',function(){
-				database.delete(blogs.documentID,index);
-			});
+		}
 		});
 	},
 	create:function(){
@@ -74,7 +74,7 @@ const blogs={
 		database.detail(blogs.documentID,index,function(item){
 			document.getElementById('loading').style.display='none';
 			document.querySelector('form input[name=author]').value=item.author;
-			document.querySelector('form textarea[name=title]').value=item.title;
+			document.querySelector('form input[name=title]').value=item.title;
 			document.querySelector('form input[name=subTitle]').value=item.subTitle;
 			document.querySelector('form textarea[name=blog]').value=item.blog;
 			
@@ -82,7 +82,7 @@ const blogs={
 				e.preventDefault();
 				let author=document.querySelector('form input[name=author]');
 				let title=document.querySelector('form input[name=title]');
-				let subTitle = document.querySelector('form textarea[name=subTitle]');
+				let subTitle = document.querySelector('form input[name=subTitle]');
 				let blog=document.querySelector('form textarea[name=blog]');
 				const date = new Date()
 				const todaysDate = date.toLocaleDateString();
@@ -97,17 +97,17 @@ const blogs={
 			});
 		});
 	},
-	// addComment:function (index) {
-	// 	document.querySelector('#add-comment-form').addEventListener('submit', function (e) {
-	// 	  e.preventDefault();
-	// 	  let user = document.querySelector('input[name=user]').value;
-	// 	  let comment = document.querySelector('textarea[name=comment]').value;
-	// 	  let newComment = {
-	// 		user: user,
-	// 		comment: comment,
-	// 	  };
-	// 	  console.log(newComment);
-	// 	  database.addComment('quotes', index, newComment); // call the updated addComment function in database.js
-	// 	});
-	//   } 
+	 addComment:function (index) {
+            document.querySelector('#add-comment-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                let user = document.querySelector('input[name=user]').value;
+                let comment = document.querySelector('textarea[name=comment]').value;
+                let newComment = {
+                    user: user,
+                    comment: comment,
+                };
+
+                database.addComment(blogs.documentID, index, newComment); // call the updated addComment function in database.js
+            });
+        }
 }

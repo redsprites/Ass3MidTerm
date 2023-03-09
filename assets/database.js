@@ -14,20 +14,19 @@ const database={
 			response.data[index]=newData;
 			api.PUT(documentID,response.data,function(){
 				alert('The Blog has been updated.');
-				window.location.reload();
+				window.location.href="post.html?index=" + index;
 			});
 		});
 	},
 	addComment: function (documentID, index, newComment) {
 		api.GET(documentID, function (response) {
 			let jsonData = response.data;
-			let quoteData = jsonData[index];
-			let comments = quoteData.comments || [];
+			let blogData = jsonData[index];
+			let comments = blogData.comments || [];
 			let user = newComment.user;
 			let comment = newComment.comment;
-			console.log(user, comment)
 			comments.push({ user: user, comment: comment }); // add the new comment as an object with the user and comment properties
-			quoteData.comments = comments;
+			blogData.comments = comments;
 			api.PUT(documentID, jsonData, function () {
 				alert('The comment has been added successfully.');
 				window.location.reload();
@@ -50,7 +49,8 @@ const database={
 			response.data.push(newData);
 			api.PUT(documentID,response.data,function(){
 				alert('The Blog has been added successfully');
-				window.location.href = "index.html";
+				var newPostIndex = response.data.length - 1;      	
+      			window.location.href = "post.html?index=" + newPostIndex;
 			});
 		});
 	},
