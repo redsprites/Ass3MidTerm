@@ -63,28 +63,58 @@
                         <div class="my-5">
                             <form>
                                 <div class="form-floating">
-                                    <input name="author" class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                    <label for="name">Name</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" name ="title" id="title" type="text" placeholder="Enter your email..." data-sb-validations="required" />
-                                    <label for="Title">Title </label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div> -->
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" name="subTitle" id="subTitle" type="text" placeholder="Enter your phone number..." data-sb-validations="required" />
-                                    <label for="subTitle">Sub Title</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control" name= "blog" id="blog" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
-                                    <label for="blog">Blog Text</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div> -->
-                                </div>
-								<div id="loading">Loading Blog...</div>	
-								<p id="blog-text"></p>
+									<input name="firstName" class="form-control" id="firstName" type="text"
+										placeholder="Enter your first name..." data-sb-validations="required" />
+									<label for="firstName">First Name</label>
+									<!-- <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div> -->
+								</div>
+								<div class="form-floating">
+									<input name="lastName" class="form-control" id="lastName" type="text"
+										placeholder="Enter your name..." data-sb-validations="required" />
+									<label for="lastName">Last Name</label>
+									<!-- <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div> -->
+								</div>
+								<div class="form-floating">
+									<input name="userName" class="form-control" id="userNname" type="text"
+										placeholder="Enter your name..." data-sb-validations="required" />
+									<label for="userName">User Name</label>
+									<!-- <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div> -->
+								</div>
+	
+								<div class="form-floating">
+									<input class="form-control" name="email" id="email"
+										placeholder="Enter your message here..." data-sb-validations="required"></input>
+									<label for="email">Email</label>
+									<!-- <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div> -->
+								</div>
+								<div class="form-floating">
+									<label for="internship">Are you looking for an internship?</label>
+									<br>
+									<br>
+									<div class="radio-container">
+										<input type="radio" name="internship" value="yes" checked>
+										<label>Yes</label>
+										<br>
+										<input type="radio" name="internship" value="no">
+										<label>No</label>
+									</div>
+								</div>
+								<div class="form-floating">
+									<input class="form-control" name="title" id="title" type="text"
+										placeholder="Enter your email..." data-sb-validations="required" />
+									<label for="Title">Title </label>
+								</div>
+								<div class="form-floating">
+									<input class="form-control" name="subTitle" id="subTitle" type="text"
+										placeholder="Enter your phone number..." data-sb-validations="required" />
+									<label for="subTitle">Sub Title</label>
+									<!-- <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div> -->
+								</div>
+								<div class="form-floating">
+									<textarea class="form-control" name="blog" id="blog"
+										placeholder="Enter your message here..." style="height: 12rem"
+										data-sb-validations="required"></textarea>
+									<label for="blog">Blog Text</label>
                                 <br />
                                 <!-- Submit success message-->
                                 <!---->
