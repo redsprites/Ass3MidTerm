@@ -57,7 +57,7 @@ const blogs = {
 			$('#post-title').text(item.title);
 			$('#post-sub-title').text(item.subTitle);
 			$('#blog-author').text(item.author);
-			$('#blog-text').text(item.blog);
+			$('#blog-text').get(0).innerHTML = (item.blog);
 			$('#blog-date').text(item.blogDate);
 			$('#btn-edit').attr('href', `edit.html?index=${index}`);
 			if (item.hasOwnProperty('comments')) {
