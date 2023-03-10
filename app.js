@@ -74,6 +74,7 @@ const blogs = {
 		  `);
 					$('#display-comments').append(el);
 					// Add like button functionality
+					let deleteButton = $(`#${comment.commentID}-delete-button`);
 					let likeButton = $(`#${comment.commentID}-like-button`);
 					let likesCount = $(`#${comment.commentID}-likes-count`);
 
@@ -81,6 +82,9 @@ const blogs = {
 						comment.likes++;
 						database.updateComment(blogs.documentID, index, comment.commentID, comment);
 						likesCount.text(comment.likes);
+					});
+					deleteButton.click(function () {
+						database.deleteComment(blogs.documentID, index, comment.commentID, comment);
 					});
 				}
 			}
