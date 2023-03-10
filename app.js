@@ -1,89 +1,146 @@
 const blogs={
 	documentID:'1082784437963603968',
-	index:function(){
-		document.getElementById('blogs').innerHTML='Loading Blogs, please wait...';
-		database.index(blogs.documentID,function(items){
-			document.getElementById('blogs').innerHTML='';
-			for(let i=0;i<items.length;i++){
-				let blog=items[i];
-				let el=document.createElement('div');
-				el.innerHTML=`<div>
-						<blockquote>
-							<em><a href="detail.html?index=${i}">${blog.blog}</a></em>
-						</blockquote>
-						${blog.author}
-						<hr />
-					</div>`;
-				document.getElementById('blogs').append(el);
-			}
+	index: function () {
+		$('#blogs').html('Loading Blogs, please wait...');
+		database.index(blogs.documentID, function (items) {
+		  $('#blogs').empty();
+		  for (let i = 0; i < items.length; i++) {
+			let blog = items[i];
+			let el = $('<div>').html(`
+						<div class="post-preview">
+							<a href="post.html?index=${i}">
+								<h2 class="post-title">${blog.title}</h2>
+								<h3 class="post-subtitle">${blog.subTitle}</h3>	
+							</a>	
+							<p class="post-meta">
+							Posted by <a href="#!">${blog.author}</a>
+							on ${blog.blogDate}
+							</p>	
+						</div>
+					`);
+			$('#post-preview').append(el);
+		  }
 		});
-	},
-	detail:function(index){
+	  },
+	  detail: function (index) {
+		database.detail(blogs.documentID, index, function (item) {
+		  let deleteButton = $('#btn-delete');
+		  deleteButton.on('click', function () {
+			database.delete(blogs.documentID, index);
+		  });
+		  $('#loading').hide();
+		  $('#post-title').text(item.title);
+		  $('#post-sub-title').text(item.subTitle);
+		  $('#blog-author').text(item.author);
+		  $('#blog-text').text(item.blog);
+		  $('#blog-date').text(item.blogDate);
+		  $('#btn-edit').attr('href', `edit.html?index=${index}`);
+		  if (item.hasOwnProperty('comments')) {
+			for (let i = 0; i < item.comments.length; i++) {
+			  let comment = item.comments[i];
+			  let el = $('<div>').html(`
+			  <div>
+					  <em>${comment.comment}</em>
+				  <blockquote>
+				  ${comment.firstName} ${comment.lastName} on ${comment.datePosted}
+				  </blockquote>
+				  <div class="comment-actions">
+					  <button class="btn btn-outline-primary" class="like-button" id="${comment.commentID}-like-button">Like</button>
+					  <span class="likes-count" id="${comment.commentID}-likes-count">${comment.likes}</span>
+				  </div>
+				  <hr />
+			  </div>
+		  `);
+		  $('#display-comments').append(el);
+		       // Add like button functionality
+			   let likeButton = $(`#${comment.commentID}-like-button`);
+			   let likesCount = $(`#${comment.commentID}-likes-count`);
+
+			   likeButton.click(function() {
+				   comment.likes++;
+				   database.updateComment(blogs.documentID, index, comment.commentID, comment);
+				   likesCount.text(comment.likes);
+			   });
+			}
+		  }
+		});
+	  },
+	  create: function () {
+		$('form').on('submit', function (e) {
+		  e.preventDefault();
+		  let author = $('form input[name=author]');
+		  let title = $('form input[name=title]');
+		  let subTitle = $('form input[name=subTitle]');
+		  let blog = $('form textarea[name=blog]');
+		  const date = new Date();
+		  const todaysDate = date.toLocaleDateString();
+	
+		  let newBlog = {
+			author: author.val(),
+			title: title.val(),
+			subTitle: subTitle.val(),
+			blog: blog.val(),
+			blogDate: todaysDate,
+		  };
+		  database.create(blogs.documentID, newBlog);
+		});
+	  },
+	  update:function(index){
 		database.detail(blogs.documentID,index,function(item){
-			document.getElementById('loading').style.display='none';
-			document.getElementById('blog-author').innerText=item.author;
-			document.getElementById('blog-text').innerText=item.blog;
-			document.getElementById('btn-edit').setAttribute('href',`edit.html?index=${index}`);
-			
-			for(let i=0;i< item.comments.length;i++){
-				let comment = item.comments[i];
-				let el=document.createElement('div');
-				el.innerHTML=`<div>
-						<blockquote>
-							<em>${comment.comment}</em>
-						</blockquote>
-						${comment.user}
-						<hr />
-					</div>`;
-				document.getElementById('display-comments').append(el);
-			}
-			let deleteButton=document.getElementById('btn-delete');
-			deleteButton.addEventListener('click',function(){
-				database.delete(blogs.documentID,index);
-			});
-		});
-	},
-	create:function(){
-		document.querySelector('form').addEventListener('submit',function(e){
-			e.preventDefault();
-			let author=document.querySelector('form input[name=author]');
-			let blog=document.querySelector('form textarea[name=blog]');
-			let newBlog={
-				author:author.value,
-				blog:blog.value
-			}
-			database.create(blogs.documentID,newBlog);
-		});
-	},
-	update:function(index){
-		database.detail(blogs.documentID,index,function(item){
-			document.getElementById('loading').style.display='none';
-			document.querySelector('form input[name=author]').value=item.author;
-			document.querySelector('form textarea[name=blog]').value=item.blog;
-			
-			document.querySelector('form').addEventListener('submit',function(e){
+			$('#loading').hide();
+			$('input[name=author]').val(item.author);
+			$('input[name=title]').val(item.title);
+			$('input[name=subTitle]').val(item.subTitle);
+			$('textarea[name=blog]').val(item.blog);
+
+			$('form').submit(function(e){
 				e.preventDefault();
-				let author=document.querySelector('form input[name=author]');
-				let blog=document.querySelector('form textarea[name=blog]');
+				let author=$('input[name=author]').val();
+				let title=$('input[name=title]').val();
+				let subTitle = $('input[name=subTitle]').val();
+				let blog=$('textarea[name=blog]').val();
+				const date = new Date()
+				const todaysDate = date.toLocaleDateString();
 				let newBlog={
-					author:author.value,
-					blog:blog.value
-				}
+					author:author,
+					title: title,
+					subTitle:subTitle,
+					blog:blog,
+					blogDate: todaysDate
+				};
 				database.update(blogs.documentID,index,newBlog);
 			});
 		});
 	},
-	// addComment:function (index) {
-	// 	document.querySelector('#add-comment-form').addEventListener('submit', function (e) {
-	// 	  e.preventDefault();
-	// 	  let user = document.querySelector('input[name=user]').value;
-	// 	  let comment = document.querySelector('textarea[name=comment]').value;
-	// 	  let newComment = {
-	// 		user: user,
-	// 		comment: comment,
-	// 	  };
-	// 	  console.log(newComment);
-	// 	  database.addComment('quotes', index, newComment); // call the updated addComment function in database.js
-	// 	});
-	//   } 
+	addComment: function (index) {
+		$('#add-comment-form').submit(function(e) {
+			e.preventDefault();
+			let firstName = $('input[name=firstName]').val();
+			let lastName = $('input[name=lastName]').val();
+			let comment = $('textarea[name=comment]').val();
+			const date = new Date()
+			const todaysDate = date.toLocaleDateString();
+			let newComment = {
+				firstName: firstName,
+				lastName: lastName,
+				comment: comment,
+				datePosted: todaysDate,
+				likes: 0
+			};
+
+			database.addComment(blogs.documentID, index, newComment, function (commentID) {
+
+				// Add like button functionality
+				let likeButton = $(`#${commentID}-like-button`);
+				let likesCount = $(`#${commentID}-likes-count`);
+
+				likeButton.click(function() {
+					newComment.likes++;
+					database.updateComment(documentID, index, commentID, newComment);
+					likesCount.text(newComment.likes);
+				});
+			});
+		});
+	}
+
 }
