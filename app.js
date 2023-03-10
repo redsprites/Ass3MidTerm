@@ -1,11 +1,35 @@
 const blogs={
 	documentID:'1082784437963603968',
 	index: function () {
+		$(document).ready(function() {
+			var btns = $("#btns");
+			var index = getAllUrlParams().page;
+			
+			if (index == null) {
+			  index = 0;
+			}
+			
+			database.index(blogs.documentID, function (items){
+			  if (index >= (items.length / 4) || index < 0 || index == null) {
+				$("body").html(`<h1 style="color: #555; font-size: 50px; margin-top: 50px; text-align: center; font-family: Arial, sans-serif">Error 404: Page not found</h1><p style = "font-size: 20px; color: #888; margin-bottom: 50px; text-align: center; font-family: Arial, sans-serif">Sorry, the page you're looking for doesn't exist.</p>`);
+			  }
+			  
+			  btns.append(`<a href="index.html?page=${(index - 1) < 0 ? ((items.length / 4) - 1) : (index - 1)}" role="button" class="btn btn-outline-secondary">Previous</a>
+			  <a href="index.html?page=${(parseInt(index) + 1) >= (items.length / 4) ? 0 : (parseInt(index) + 1)}" role="button" class="btn btn-outline-secondary">Next</a>`);
+			});
+		  
+		  
 		$('#blogs').html('Loading Blogs, please wait...');
 		database.index(blogs.documentID, function (items) {
 		  $('#blogs').empty();
-		  for (let i = 0; i < items.length; i++) {
+			var endIndex = (index * 4) + 4;
+			if (endIndex > items.length) {
+			  endIndex = items.length;
+			}
+		  for (let i = index*4; i < endIndex; i++) {
 			let blog = items[i];
+			console.log(i);
+			console.log(blog.title);
 			let el = $('<div>').html(`
 						<div class="post-preview">
 							<a href="post.html?index=${i}">
@@ -20,6 +44,7 @@ const blogs={
 					`);
 			$('#post-preview').append(el);
 		  }
+		});
 		});
 	  },
 	  detail: function (index) {
