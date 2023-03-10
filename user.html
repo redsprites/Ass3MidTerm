@@ -29,82 +29,40 @@
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="create.html">Add a new Blog</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="user.html">Profile</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
                      </ul>
                 </div>
             </div>
         </nav>
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/undraw_blog_post.svg')">
+        <header class="masthead" style="background-color: #093b45; background-blend-mode: lighten; background-size:90% 80%; background-image: url('assets/img/undraw_career_progress.svg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="page-heading">
-                            <h1>Your Profile</h1>
-                            <span class="subheading">All about you right here.</span>
+                            <h1>User Profile</h1>
+                            <span class="subheading">All about the user right here.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
         <!-- Main Content-->
-        <main class="mb-4">
+        <article class="mb-4">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <p>Tell us a little bit about yourself.</p>
-                        <div class="my-5">
-                    
-                            <form>
-                                <div class="form-floating">
-                                    <input name="author" class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                    <label for="name">First name</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" name ="title" id="title" type="text" placeholder="Enter your email..." data-sb-validations="required" />
-                                    <label for="Title">Last name</label>
-                                </div>
-                                <div class="form-floating">
-                                    <input class="form-control" name="subTitle" id="subTitle" type="text" placeholder="Enter your phone number..." data-sb-validations="required" />
-                                    <label for="subTitle">Username</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control" name= "blog" id="blog" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
-                                    <label for="blog">Email</label>
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div> -->
-                                </div>
-                                <div class="form-floating">
-                                    <label for="blog">Are you looking for an internship?</label>
-                                    <br />
-                                    <!-- <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div> -->
-                                </div>
-                                <br />
-                                <div>
-                                    <button type="radio" name="yes_no" checked>Yes</button>
-                                    <button type="radio" name="yes_no">No</button>
-                                </div>
-                                <br />
-                                <div class="d-none" id="submitSuccessMessage">
-                                    <div class="text-center mb-3">
-                                        <div class="fw-bolder">Form submission successful!</div>
-                                        To activate this form, sign up at
-                                        <br />
-                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                    </div>
-                                </div>
-                              
-                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                                <!-- Submit Button-->
-                                <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Save</button>
-                            </form>
-                        </div>
+                        <div id="loading">Loading User...</div>
+                        <div id="user-preview"></div>
+                        <div id="first-name"></div>
+                        <div id="last-name"></div>
+                        <div id="user-name"></div>
+                        <div id="email"></div>
+                        <div id="internship"></div>
                     </div>
                 </div>
             </div>
-        </main>
+        </article>
         <!-- Footer-->
         <footer class="border-top">
             <div class="container px-4 px-lg-5">
@@ -149,9 +107,10 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="assets/api.js"></script>
         <script src="assets/database.js"></script>
+        <script src="assets/getAllURLParams.js"></script>
         <script src="app.js"></script>
         <script>
-            blogs.create();
+            blogs.displayUser(getAllUrlParams().index);
         </script>
         <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
     </body>
