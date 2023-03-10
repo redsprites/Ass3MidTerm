@@ -1,11 +1,11 @@
-const blogs={
-	documentID:'1082784437963603968',
+const blogs = {
+	documentID: '1082784437963603968',
 	index: function () {
-		$(document).ready(function() {
+		$(document).ready(function () {
 			var btns = $("#btns");
 			var index = getAllUrlParams().page;	
 			if (index == null) {
-			  index = 0;
+				index = 0;
 			}
 			database.index(blogs.documentID, function (items){
 			  if (index >= (items.length / 4) || index < 0 || index == null) {
@@ -35,12 +35,12 @@ const blogs={
 							</p>	
 						</div>
 					`);
-			$('#post-preview').append(el);
-		  }
+					$('#post-preview').append(el);
+				}
+			});
 		});
-		});
-	  },
-	  detail: function (index) {
+	},
+	detail: function (index) {
 		database.detail(blogs.documentID, index, function (item) {
 		  let deleteButton = $('#btn-delete');
 		  deleteButton.on('click', function () {
@@ -65,24 +65,25 @@ const blogs={
 				  ${comment.firstName} ${comment.lastName} on ${comment.datePosted}
 				  </blockquote>
 				  <div class="comment-actions">
-					  <button class="btn btn-outline-primary" class="like-button" id="${comment.commentID}-like-button">Like</button>
-					  <span class="likes-count" id="${comment.commentID}-likes-count">${comment.likes}</span>
+				  		<button class="btn btn-outline-primary btn-sm" class="delete-button" id="${comment.commentID}-delete-button">Delete</button>
+						<button class="btn btn-outline-primary btn-sm" class="like-button" id="${comment.commentID}-like-button">Like</button>
+						<span class="likes-count" id="${comment.commentID}-likes-count" style="font-size:medium">${comment.likes}</span>
 				  </div>
 				  <hr />
 			  </div>
 		  `);
-		  $('#display-comments').append(el);
-		       // Add like button functionality
-			   let likeButton = $(`#${comment.commentID}-like-button`);
-			   let likesCount = $(`#${comment.commentID}-likes-count`);
+					$('#display-comments').append(el);
+					// Add like button functionality
+					let likeButton = $(`#${comment.commentID}-like-button`);
+					let likesCount = $(`#${comment.commentID}-likes-count`);
 
-			   likeButton.click(function() {
-				   comment.likes++;
-				   database.updateComment(blogs.documentID, index, comment.commentID, comment);
-				   likesCount.text(comment.likes);
-			   });
+					likeButton.click(function () {
+						comment.likes++;
+						database.updateComment(blogs.documentID, index, comment.commentID, comment);
+						likesCount.text(comment.likes);
+					});
+				}
 			}
-		  }
 		});
 	  },
 	  displayUser: function (index) {
@@ -127,9 +128,9 @@ const blogs={
 		  };
 		  database.create(blogs.documentID, newBlog);
 		});
-	  },
-	  update:function(index){
-		database.detail(blogs.documentID,index,function(item){
+	},
+	update: function (index) {
+		database.detail(blogs.documentID, index, function (item) {
 			$('#loading').hide();
 			$('input[name=firstName]').val(item.firstName);
 			$('input[name=lastName]').val(item.lastName);
@@ -137,7 +138,7 @@ const blogs={
 			$('input[name=subTitle]').val(item.subTitle);
 			$('textarea[name=blog]').val(item.blog);
 
-			$('form').submit(function(e){
+			$('form').submit(function (e) {
 				e.preventDefault();
 				let firstName=$('input[name=firstName]').val();
 				let lastName=$('input[name=lastName]').val();
@@ -160,12 +161,12 @@ const blogs={
 					blog:blog,
 					blogDate: todaysDate
 				};
-				database.update(blogs.documentID,index,newBlog);
+				database.update(blogs.documentID, index, newBlog);
 			});
 		});
 	},
 	addComment: function (index) {
-		$('#add-comment-form').submit(function(e) {
+		$('#add-comment-form').submit(function (e) {
 			e.preventDefault();
 			let firstName = $('input[name=firstName]').val();
 			let lastName = $('input[name=lastName]').val();
@@ -179,20 +180,24 @@ const blogs={
 				datePosted: todaysDate,
 				likes: 0
 			};
-
+	
 			database.addComment(blogs.documentID, index, newComment, function (commentID) {
-
+	
 				// Add like button functionality
 				let likeButton = $(`#${commentID}-like-button`);
 				let likesCount = $(`#${commentID}-likes-count`);
-
-				likeButton.click(function() {
+				let deleteButton = $(`#${commentID}-delete-button`);
+	
+				likeButton.click(function () {
 					newComment.likes++;
 					database.updateComment(documentID, index, commentID, newComment);
 					likesCount.text(newComment.likes);
 				});
+	
+				deleteButton.click(function() { // change onclick to click
+					database.deleteComment(blogs.documentID, index, commentID); // use blogs.documentID instead of documentID
+				})
 			});
 		});
 	}
-
 }
