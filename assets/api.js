@@ -14,7 +14,7 @@ const api={
 	GET:function(documentID,callback){
 		axios.get(`${api.endpoint}${documentID}`,{}).then(function(response){
 			callback(response); 
-			console.log(response.data);
+
 			})
 		.catch(function(error){
 			console.log(error);
