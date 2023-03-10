@@ -52,6 +52,7 @@ const blogs={
 		  $('#blog-first-name').text(item.firstName);
 		  $('#blog-last-name').text(item.lastName);
 		  $('#blog-text').text(item.blog);
+		  $('#blog-text').get(0).innerHTML= (item.blog);
 		  $('#blog-date').text(item.blogDate);
 		  $('#btn-edit').attr('href', `edit.html?index=${index}`);
 		  if (item.hasOwnProperty('comments')) {
