@@ -100,7 +100,7 @@ const blogs = {
 			<div class="user-preview">
 					<p class="first-name">First Name: ${item.firstName}</p>
 					<p class="last-name">Last Name: ${item.lastName}</p>
-					<p class="user-name">User Name: ${item.lastName}</p>
+					<p class="user-name">User Name: ${item.userName}</p>
 					<p class="email">Email: ${item.email}</p>
 					<p class="internship">Looking for Internship: ${item.internship}</p>		
 			</div>
